@@ -14,7 +14,11 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(express.static("public"));
 
-mongoose.connect("mongodb+srv://kidong:kizzong1@afg-db-qsh3u.mongodb.net/test?retryWrites=true&w=majority", {
+const mongodbID = kidong;
+const mongodbPW = kizzong1;
+const DBnameToconnect = test;
+
+mongoose.connect("mongodb+srv://" + mongodbID + ":" + mongodbPW + "@afg-db-qsh3u.mongodb.net/" + DBnameToconnect +"?retryWrites=true&w=majority", {
   useNewUrlParser: true,
   useUnifiedTopology: true
 }); // allows to use local MongoDB 
