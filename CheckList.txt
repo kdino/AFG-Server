@@ -1,12 +1,12 @@
-- AWS S3¿¡¼­ ÀÌ¹ÌÁö ÀúÀå/°¡Á®¿À´Â ¹æ¹ý
-ÀúÀå½Ã¿¡´Â putObject¸Þ¼Òµå·Î ÀÌ¹ÌÁö ¾÷·Îµå
-°¡Á®¿Ã¶§´Â express¿¡¼­ api endpoint¸¦ ¸¸µé¾î, ÇØ´ç ÀÌ¹ÌÁö url¿¡¼­ ÀÌ¹ÌÁö¸¦ °¡Á®¿Í¼­ Å¬¶óÀÌ¾ðÆ®¿¡ ¸®ÅÏÇÏµµ·Ï ¸¸µé±â
+ï»¿- AWS S3ì—ì„œ ì´ë¯¸ì§€ ì €ìž¥/ê°€ì ¸ì˜¤ëŠ” ë°©ë²•
+ì €ìž¥ì‹œì—ëŠ” putObjectë©”ì†Œë“œë¡œ ì´ë¯¸ì§€ ì—…ë¡œë“œ
+ê°€ì ¸ì˜¬ë•ŒëŠ” expressì—ì„œ api endpointë¥¼ ë§Œë“¤ì–´, í•´ë‹¹ ì´ë¯¸ì§€ urlì—ì„œ ì´ë¯¸ì§€ë¥¼ ê°€ì ¸ì™€ì„œ í´ë¼ì´ì–¸íŠ¸ì— ë¦¬í„´í•˜ë„ë¡ ë§Œë“¤ê¸°
 
 TODOs
-- node ¸ðµâÈ­ ¹æ¹ý ºí·Î±×¿¡ Á¤¸®ÇÏ±â
+- node ëª¨ë“ˆí™” ë°©ë²• ë¸”ë¡œê·¸ì— ì •ë¦¬í•˜ê¸°
+- S3 Bucket Policy í•´ê²°
 
-
-Âü°í »çÀÌÆ®
+ì°¸ê³  ì‚¬ì´íŠ¸
 https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/s3-example-creating-buckets.html
 
 https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#putObject-property
