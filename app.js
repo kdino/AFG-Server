@@ -4,6 +4,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const mongoose = require('mongoose');
+const AWS = require("aws-sdk");
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 app.use(express.static("public"));
+const s3bucket = AWS.S3({params: {Bucket: 'afgbucket'}});
 
 const mongodbID = kidong;
 const mongodbPW = kizzong1;
