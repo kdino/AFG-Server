@@ -6,15 +6,15 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const mongoose = require("mongoose");
-const multer = require('multer'); // express에 multer모듈 적용 (for 파일업로드)
+const multer = require("multer"); // express에 multer모듈 적용 (for 파일업로드)
 const upload = multer({
   storage: multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, 'uploads/');
+      cb(null, "uploads/");
     },
     filename: function (req, file, cb) {
       cb(null, file.originalname);
-    }
+    },
   }),
 });
 
@@ -169,11 +169,17 @@ app
     );
   });
 
-app.route("/api/pictures")
-  .post(s3Api.upload.single('myfile'), function(req, res){
-    //s3API.upload(req.file.);
+var doUpload = s3Api.upload.single("img");
+app.post("/api/pictures", function (req, res) {
+  doUpload(req, res, function (err) {
+    if (err) {
+      res.status(403).send("Failed to upload");
+    } else {
+      res.status(200).send("Successfully saved");
+    }
   });
+});
 
-app.listen(5000, function () {
+app.listen(3000, function () {
   console.log("Server started on port 3000");
 });
