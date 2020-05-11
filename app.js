@@ -6,17 +6,6 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const mongoose = require("mongoose");
-const multer = require("multer"); // express에 multer모듈 적용 (for 파일업로드)
-const upload = multer({
-  storage: multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, "uploads/");
-    },
-    filename: function (req, file, cb) {
-      cb(null, file.originalname);
-    },
-  }),
-});
 
 const app = express();
 
@@ -169,9 +158,9 @@ app
     );
   });
 
-var doUpload = s3Api.upload.single("img");
+const upload = s3Api.upload.single("img");
 app.post("/api/pictures", function (req, res) {
-  doUpload(req, res, function (err) {
+  upload(req, res, function (err) {
     if (err) {
       res.status(403).send("Failed to upload");
     } else {
