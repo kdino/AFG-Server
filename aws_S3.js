@@ -25,7 +25,6 @@ uploadParams.Key = path.basename(file);
 
 // call S3 to retrieve upload file to specified bucket
 s3API.upload = function () {
-  
   s3.upload(uploadParams, function (err, data) {
     if (err) {
       console.log("Error", err);

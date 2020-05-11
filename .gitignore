@@ -105,3 +105,4 @@ dist
 
 # Private Key file
 *.pem
+aws.json

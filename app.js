@@ -1,13 +1,22 @@
 //jshint esversion:6
 
-const s3API = require("./aws_S3");
+const s3Api = require("./s3Api");
 
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const mongoose = require("mongoose");
 const multer = require('multer'); // express에 multer모듈 적용 (for 파일업로드)
-const upload = multer({ dest: 'uploads/' })
+const upload = multer({
+  storage: multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'uploads/');
+    },
+    filename: function (req, file, cb) {
+      cb(null, file.originalname);
+    }
+  }),
+});
 
 const app = express();
 
@@ -19,11 +28,11 @@ app.use(
   })
 );
 app.use(express.static("public"));
-const s3bucket = AWS.S3({ params: { Bucket: "afgbucket" } });
+//const s3bucket = AWS.S3({ params: { Bucket: "afgbucket" } });
 
-const mongodbID = kidong;
-const mongodbPW = kizzong1;
-const DBnameToconnect = test;
+const mongodbID = "kidong";
+const mongodbPW = "kizzong1";
+const DBnameToconnect = "test";
 
 mongoose.connect(
   "mongodb+srv://" +
@@ -161,10 +170,10 @@ app
   });
 
 app.route("/api/pictures")
-  .post(upload.single('myfile'), function(req, res){
+  .post(s3Api.upload.single('myfile'), function(req, res){
     //s3API.upload(req.file.);
   });
 
-app.listen(3000, function () {
+app.listen(5000, function () {
   console.log("Server started on port 3000");
 });
