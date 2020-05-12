@@ -1,36 +1,55 @@
 //jshint esversion:6
 
+const s3Api = require("./s3Api");
+const config = require("./aws.json");
+
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
+const AWS = require("aws-sdk");
 
+const s3 = new AWS.S3();
 const app = express();
 
-app.set('view engine', 'ejs');
+app.set("view engine", "ejs");
 
-app.use(bodyParser.urlencoded({
-  extended: true
-}));
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+);
 app.use(express.static("public"));
 
-mongoose.connect("mongodb+srv://kidong:kizzong1@afg-db-qsh3u.mongodb.net/test?retryWrites=true&w=majority", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-}); // allows to use local MongoDB 
+
+mongoose.connect(
+  "mongodb+srv://" +
+    config.mongodbID +
+    ":" +
+    config.mongodbPW +
+    "@afg-db-qsh3u.mongodb.net/" +
+    config.DBnameToConnect +
+    "?retryWrites=true&w=majority",
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  }
+).catch(function(err){
+  console.log(err);
+}); // allows to use local MongoDB
 
 const articleSchema = new mongoose.Schema({
   title: String,
-  content: String
+  content: String,
 });
 
 const Article = mongoose.model("Article", articleSchema);
 
-
 //////////////////// Request targeting All Articles ////////////////
-app.route("/articles")
-  .get(function(req, res) {
-    Article.find(function(err, foundArticles) {
+app
+  .route("/articles")
+  .get(function (req, res) {
+    Article.find(function (err, foundArticles) {
       if (err) {
         res.send(err);
       } else {
@@ -39,16 +58,16 @@ app.route("/articles")
     });
   })
 
-  .post(function(req, res) {
+  .post(function (req, res) {
     console.log(req.body.title);
     console.log(req.body.content);
 
     const newArticle = new Article({
       title: req.body.title,
-      content: req.body.content
+      content: req.body.content,
     });
 
-    newArticle.save(function(err) {
+    newArticle.save(function (err) {
       if (err) {
         res.send(err);
       } else {
@@ -57,8 +76,8 @@ app.route("/articles")
     });
   })
 
-  .delete(function(req, res) {
-    Article.deleteMany({}, function(err) {
+  .delete(function (req, res) {
+    Article.deleteMany({}, function (err) {
       if (err) {
         res.send(err);
       } else {
@@ -68,29 +87,36 @@ app.route("/articles")
   });
 
 //////////////////// Request targeting specific Articles ////////////////
-app.route("/articles/:articleTitle")
-  .get(function(req, res) {
-    Article.find({
-      title: req.params.articleTitle
-    }, function(err, foundArticle) {
-      if (err) {
-        res.send("No articles matched!");
-      } else {
-        res.send(foundArticle);
+app
+  .route("/articles/:articleTitle")
+  .get(function (req, res) {
+    Article.find(
+      {
+        title: req.params.articleTitle,
+      },
+      function (err, foundArticle) {
+        if (err) {
+          res.send("No articles matched!");
+        } else {
+          res.send(foundArticle);
+        }
       }
-    });
+    );
   })
 
-  .put(function(req, res) {
-    Article.update({
-        title: req.params.articleTitle
-      }, {
+  .put(function (req, res) {
+    Article.update(
+      {
+        title: req.params.articleTitle,
+      },
+      {
         title: req.body.title,
-        content: req.body.content
-      }, {
-        overwrite: true
+        content: req.body.content,
+      },
+      {
+        overwrite: true,
       }, // mongoDB는 바꿀 parameter를 다 채우면 overwrite True가 되나 mongoose에서는 false로 남아있기에 수동으로 바꿔줌.
-      function(err) {
+      function (err) {
         if (err) {
           res.send("No articles matched!");
         } else {
@@ -100,33 +126,65 @@ app.route("/articles/:articleTitle")
     );
   })
 
-  .patch(function(req, res) {
-    Article.update({
-      title: req.params.articleTitle
-    }, {
-      $set: req.body
-    }, function(err) {
-      if (err) {
-        res.send("No articles matched!");
-      } else {
-        res.send("Successfully updated data!");
+  .patch(function (req, res) {
+    Article.update(
+      {
+        title: req.params.articleTitle,
+      },
+      {
+        $set: req.body,
+      },
+      function (err) {
+        if (err) {
+          res.send("No articles matched!");
+        } else {
+          res.send("Successfully updated data!");
+        }
       }
-    });
+    );
   })
 
-  .delete(function(req, res) {
-    Article.deleteOne({
-      title: req.params.articleTitle
-    }, function(err) {
-      if (err) {
-        res.send("No articles matched!");
-      } else {
-        res.send("Successfully deleted data!");
+  .delete(function (req, res) {
+    Article.deleteOne(
+      {
+        title: req.params.articleTitle,
+      },
+      function (err) {
+        if (err) {
+          res.send("No articles matched!");
+        } else {
+          res.send("Successfully deleted data!");
+        }
       }
-    })
+    );
   });
 
+///////////// AFG APIs///////////////
 
-app.listen(3000, function() {
+app.get("/api/defaultPictures/:picID", function(req, res){
+  var params = {Bucket: config.bucketName, Key: req.params.picID, Expires: 10};
+  s3.getSignedUrl('getObject', params, function(err, url){
+    if(err){
+      res.status(403).send("Failed to get a image");
+      console.log(err);
+    } else{
+      res.status(200).send(url);
+      console.log(url);
+    }
+  });
+});
+
+const upload = s3Api.upload.single("img");
+app.post("/api/pictures", function (req, res) {
+  upload(req, res, function (err) {
+    if (err) {
+      res.status(403).send("Failed to upload");
+    } else {
+      res.status(200).send("Successfully saved");
+    }
+  });
+});
+
+app.listen(3000, function () {
   console.log("Server started on port 3000");
 });
