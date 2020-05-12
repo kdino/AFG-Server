@@ -1,12 +1,15 @@
 //jshint esversion:6
 
 const s3Api = require("./s3Api");
+const config = require("./aws.json");
 
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const mongoose = require("mongoose");
+const AWS = require("aws-sdk");
 
+const s3 = new AWS.S3();
 const app = express();
 
 app.set("view engine", "ejs");
@@ -17,25 +20,23 @@ app.use(
   })
 );
 app.use(express.static("public"));
-//const s3bucket = AWS.S3({ params: { Bucket: "afgbucket" } });
 
-const mongodbID = "kidong";
-const mongodbPW = "kizzong1";
-const DBnameToconnect = "test";
 
 mongoose.connect(
   "mongodb+srv://" +
-    mongodbID +
+    config.mongodbID +
     ":" +
-    mongodbPW +
+    config.mongodbPW +
     "@afg-db-qsh3u.mongodb.net/" +
-    DBnameToconnect +
+    config.DBnameToConnect +
     "?retryWrites=true&w=majority",
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   }
-); // allows to use local MongoDB
+).catch(function(err){
+  console.log(err);
+}); // allows to use local MongoDB
 
 const articleSchema = new mongoose.Schema({
   title: String,
@@ -157,6 +158,21 @@ app
       }
     );
   });
+
+///////////// AFG APIs///////////////
+
+app.get("/api/defaultPictures/:picID", function(req, res){
+  var params = {Bucket: config.bucketName, Key: req.params.picID, Expires: 10};
+  s3.getSignedUrl('getObject', params, function(err, url){
+    if(err){
+      res.status(403).send("Failed to get a image");
+      console.log(err);
+    } else{
+      res.status(200).send(url);
+      console.log(url);
+    }
+  });
+});
 
 const upload = s3Api.upload.single("img");
 app.post("/api/pictures", function (req, res) {
