@@ -5,7 +5,7 @@ const User = require("../models/user");
 router.post("/", function (req, res) {
   User.create(req.body)
     .then(function (user) {
-      res.send(todo);
+      res.send(user);
     })
     .catch(function (err) {
       res.status(500).send(err);

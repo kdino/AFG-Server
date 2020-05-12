@@ -8,14 +8,14 @@ const userSchema = new mongoose.Schema({
 });
 
 // Create a new user document
-userSchema.static.create = function(payload){
+userSchema.statics.create = function(payload){
     const user = new this(payload);
     return user.save();
 }
 
 // Find one by userID
-userSchema.static.findOneByTodoid = function (userid) {
-  return this.findOne({ todoid });
+userSchema.statics.findOneByTodoid = function (userid) {
+  return this.findOne({ userid });
 };
 
 // Create Model and Export
