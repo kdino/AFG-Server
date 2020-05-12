@@ -105,5 +105,5 @@ dist
 
 # Private Key file
 *.pem
-aws.json
+config.json
 rootkey.csv
