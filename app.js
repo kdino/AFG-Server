@@ -1,5 +1,4 @@
 //jshint esversion:6
-const users = require("./models/user");
 const s3Api = require("./s3Api");
 const config = require("./config.json");
 
@@ -33,6 +32,9 @@ mongoose.set("useCreateIndex", true);
 
 // users Router
 app.use("/api/users", require("./routes/users"));
+
+// cards Router
+app.use("/api/cards", require("./routes/cards"));
 
 // Get Default Image
 app.get("/api/defaultPictures/:picID", function (req, res) {
