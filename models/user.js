@@ -4,7 +4,9 @@ const mongoose = require("mongoose");
 const userSchema = new mongoose.Schema({
   userid: { type: String, required: true, unique: true },
   gender: {type: Boolean, required: true},
-  age: {type: Number, required: true}
+  age: {type: Number, required: true},
+  churchName: {type: String, require: true},
+  religiousSect: {type: String, require: true}
 });
 
 // Create a new user document
