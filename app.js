@@ -59,9 +59,9 @@ const upload = s3Api.upload.single("img");
 app.post("/api/pictures", function (req, res) {
   upload(req, res, function (err) {
     if (err) {
-      res.status(403).send("Failed to upload");
+      res.status(500).send("{\"result\" : \"fail\"}");
     } else {
-      res.status(200).send("Successfully saved");
+      res.status(200).send("{\"result\" : \"success\"}");
     }
   });
 });

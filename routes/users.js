@@ -16,8 +16,8 @@ router.post("/", function (req, res) {
 router.get("/:userid", function (req, res) {
   User.findOneByTodoid(req.params.userid)
     .then((user) => {
-      if (!user) return res.status(404).send({ err: "User not found" });
-      res.status(200).send(`findOne successfully: ${user}`);
+      if (!user) return res.status(404).send({ "result": "User not found" });
+      res.status(200).send(user);
     })
     .catch((err) => res.status(500).send(err));
 });
