@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 
 // Schema Define
+
 const userSchema = new mongoose.Schema({
-  userid: { type: String, required: true, unique: true },
-  gender: {type: Boolean, required: true},
+  gender: {type: String, required: true},
   age: {type: Number, required: true},
   churchName: {type: String, require: true},
   religiousSect: {type: String, require: true}
@@ -16,8 +16,8 @@ userSchema.statics.create = function(payload){
 }
 
 // Find one by userID
-userSchema.statics.findOneByTodoid = function (userid) {
-  return this.findOne({ userid });
+userSchema.statics.findOneByTodoid = function (_id) {
+  return this.findOne({ _id });
 };
 
 // Create Model and Export
