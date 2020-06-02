@@ -5,7 +5,7 @@ const User = require("../models/user");
 router.post("/", function (req, res) {
   User.create(req.body)
     .then(function (user) {
-      res.status(200).send(user);
+      res.status(200).send({ "result": "success" });
     })
     .catch(function (err) {
       res.status(500).send(err);
@@ -16,7 +16,7 @@ router.post("/", function (req, res) {
 router.get("/:userid", function (req, res) {
   User.findOneByTodoid(req.params.userid)
     .then((user) => {
-      if (!user) return res.status(404).send({ "result": "User not found" });
+      if (!user) return res.status(400).send({ "result": "User not found" });
       res.status(200).send(user);
     })
     .catch((err) => res.status(500).send(err));

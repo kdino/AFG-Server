@@ -37,7 +37,7 @@ app.use("/api/users", require("./routes/users"));
 app.use("/api/cards", require("./routes/cards"));
 
 // bibles Router
-app.use("/api/bible", require("./routes/bibles"));
+app.use("/api/bibles", require("./routes/bibles"));
 
 // Get Default Image
 app.get("/api/defaultPictures/:picID", function (req, res) {
