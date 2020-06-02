@@ -7,7 +7,7 @@ const cardSchema = new mongoose.Schema({
   verse1: { type: Number, required: true },
   verse2: { type: Number, required: true },
   feelings: { type: [String], required: true },
-  image_id: { type: String, required: true },
+  image_id: { type: String },
 });
 
 // Create a new card

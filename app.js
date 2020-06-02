@@ -39,6 +39,9 @@ app.use("/api/cards", require("./routes/cards"));
 // bibles Router
 app.use("/api/bibles", require("./routes/bibles"));
 
+// pictures Router
+app.use("/api/pictures", require("./routes/cards"));
+
 // Get Default Image
 app.get("/api/defaultPictures/:picID", function (req, res) {
   var params = {
@@ -48,23 +51,11 @@ app.get("/api/defaultPictures/:picID", function (req, res) {
   };
   s3.getSignedUrl("getObject", params, function (err, url) {
     if (err) {
-      res.status(403).send("Failed to get a image");
+      res.status(400).send("Failed to get a image");
       console.log(err);
     } else {
       res.status(200).send(url);
       console.log(url);
-    }
-  });
-});
-
-// Post Custom Image
-const upload = s3Api.upload.single("img");
-app.post("/api/pictures", function (req, res) {
-  upload(req, res, function (err) {
-    if (err) {
-      res.status(500).send("{\"result\" : \"fail\"}");
-    } else {
-      res.status(200).send("{\"result\" : \"success\"}");
     }
   });
 });
