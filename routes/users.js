@@ -8,7 +8,12 @@ router.post("/", function (req, res) {
       res.status(200).send({ "result": "success" });
     })
     .catch(function (err) {
-      res.status(500).send(err);
+      if (err.code == 11000) {
+        res.status(400).send({ "result": "fail" });
+      }
+      else {
+        res.status(500).send(err);
+      }
     });
 });
 
@@ -16,8 +21,8 @@ router.post("/", function (req, res) {
 router.get("/:userid", function (req, res) {
   User.findOneByTodoid(req.params.userid)
     .then((user) => {
-      if (!user) return res.status(400).send({ "result": "User not found" });
-      res.status(200).send(user);
+      if (!user) return res.status(400).send({ "result": "fail" });
+      res.status(200).send({ "result": "success" });
     })
     .catch((err) => res.status(500).send(err));
 });
