@@ -18,8 +18,8 @@ router.post("/", function (req, res) {
 });
 
 // Find one by userID
-router.get("/:userid", function (req, res) {
-  User.findOneByTodoid(req.params.userid)
+router.get("/", function (req, res) {
+  User.findOneByTodoid(req.query.uuid)
     .then((user) => {
       if (!user) return res.status(400).send({ "result": "fail" });
       res.status(200).send({ "result": "success" });
