@@ -39,4 +39,30 @@ router.post("/", function (req, res) {
   });
 });
 
+router.get("/", function (req, res) {
+  var returnData;
+  var returnImg;
+  var imgID;
+
+  Cards.findOneByTodoid(req.query.cardID)
+    .then(function (card) {
+      returnData = card;
+      imgID = card.imgID;
+    })
+    .then(function(){
+      returnImg = s3.getObject({Bucket: 'afgbucket', Key: imgID}).createReadStream();
+    })
+    .catch(function () {
+      res.status(500).send({ result: "fail" });
+      return;
+    })
+    .finally(function () {
+      res.status(200).send({
+        result: "success",
+        img: returnImg,
+        data: returnData
+      });
+    });
+});
+
 module.exports = router;

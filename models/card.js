@@ -2,12 +2,13 @@ const mongoose = require("mongoose");
 
 // Schema Define
 const cardSchema = new mongoose.Schema({
+  uuid: {type: String, required: true},
+  imgID: {type: String, required: true},
   book: { type: String, required: true },
   chapter: { type: Number, required: true },
   verse1: { type: Number, required: true },
   verse2: { type: Number, required: true },
   feelings: { type: [String], required: true },
-  image_id: { type: String },
 });
 
 // Create a new card

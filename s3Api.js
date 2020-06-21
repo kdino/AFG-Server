@@ -15,7 +15,8 @@ module.exports = {
             bucket: config.customImageBucket,
             key: function (req, file, cb) {
                 let extension = path.extname(file.originalname);
-                cb(null, uuid() + Date.now().toString() + extension)
+                // cb(null, uuid() + Date.now().toString() + extension);
+                cb(null, req.body.imgID);
             },
             acl: 'public-read-write'
         })
