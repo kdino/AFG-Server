@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const Card = require("../models/card");
+const User = require("../models/user");
 const s3Api = require("../s3Api");
 
 const upload = s3Api.upload.single("img");

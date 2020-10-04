@@ -27,4 +27,5 @@ router.get("/", function (req, res) {
     .catch((err) => res.status(500).send(err));
 });
 
+// Append thumbnail
 module.exports = router;

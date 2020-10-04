@@ -7,6 +7,10 @@ const userSchema = new mongoose.Schema({
   gender: {type: String, required: true},
   dateOfBirth: {type: String, required: true},
   churchName: {type: String, require: true},
+  thumbnailList: [{
+    title: {type: String},
+    photoBase64: {type: String} 
+  }]
 });
 
 // Create a new user document
@@ -19,6 +23,10 @@ userSchema.statics.create = function(payload){
 userSchema.statics.findOneByTodoid = function (uuid) {
   return this.findOne({ uuid });
 };
+
+userSchema.statics.updateOneById = function(uuid, thumbnail){
+  return this.updateOne({ uuid }, {$push: {thumbnailList: thumbnail} });
+}
 
 // Create Model and Export
 module.exports = mongoose.model("User", userSchema);
