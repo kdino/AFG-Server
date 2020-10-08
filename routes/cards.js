@@ -45,7 +45,7 @@ router.get("/", function (req, res) {
   var returnImg;
   var imgID;
 
-  Cards.findOneByTodoid(req.query.cardID)
+  Card.findOneByTodoid(req.query.cardID)
     .then(function (card) {
       returnData = card;
       imgID = card.imgID;
