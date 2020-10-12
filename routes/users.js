@@ -33,7 +33,7 @@ router.get("/", function (req, res) {
 
 // Append thumbnail
   router.put("/", function (req, res){
-    User.updateOneById(req.body)
+    User.updateOneById(req.body.uuid, req.body.thumbnail)
     .then(function (user) {
       res.status(200).send({ "result": "success" });
     })

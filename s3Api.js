@@ -16,9 +16,13 @@ module.exports = {
             key: function (req, file, cb) {
                 let extension = path.extname(file.originalname);
                 // cb(null, uuid() + Date.now().toString() + extension);
+                console.log(file)
                 cb(null, req.body.imgID);
             },
             acl: 'public-read-write'
         })
+    }),
+    getBase64 : multer({
+        storage: multer.memoryStorage()
     })
 };

@@ -25,8 +25,10 @@ userSchema.statics.findOneByTodoid = function (uuid) {
 };
 
 userSchema.statics.updateOneById = function(uuid, thumbnail){
-  return this.updateOne({ uuid }, {$push: {thumbnailList: thumbnail} });
-}
+  console.log(uuid);
+  console.log(thumbnail);
+  return this.updateOne({ uuid : uuid }, {$push: {thumbnailList: thumbnail} });
+};
 
 // Create Model and Export
 module.exports = mongoose.model("User", userSchema);
