@@ -10,7 +10,7 @@ const AWS = require("aws-sdk");
 const s3 = new AWS.S3();
 const app = express();
 
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit : "50mb"}));
 app.use(express.static("public"));
 
 mongoose

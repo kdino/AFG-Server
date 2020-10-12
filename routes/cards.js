@@ -4,6 +4,7 @@ const User = require("../models/user");
 const s3Api = require("../s3Api");
 const sharp = require('sharp');
 const request = require('request');
+const axios = require('axios');
 
 const upload = s3Api.upload.single("img");
 const getBase64 = s3Api.getBase64.single("img");
@@ -14,11 +15,14 @@ var myReturn = {
   message: null,
 };
 
+var baseString = 'none';
+
 // Create a new card Info
 router.post("/", function (req, res) {
   upload(req, res, function (err) {
     if (!err) myReturn.pictureResult = "success";
 
+    console.log(req.body);
     Card.create(req.body)
       .then(function () {
         myReturn.cardResult = "success";
@@ -32,24 +36,65 @@ router.post("/", function (req, res) {
           myReturn.cardResult == "success" &&
           myReturn.pictureResult == "success"
         ) {
-            let options = {
-              uri: "http://localhost:3000/api/users",
-              method: 'PUT',
-              body:{
-                uuid : "myUUID",
-                thumbnail : {
-                  title : "titleExodus",
-                  photoBase64 : "buf.toString('base64')"
-                }
-              },
-              json:true
-          };
-          request(options, function(err,httpResponse,body){
-            if(err) console.log(err);
-            else console.log("req successed");
-          });
+            // axios.get(req.file.location, {
+            //   responseType: 'arraybuffer'
+            // }).then(function(response){
+            //   const buff = Buffer.from(response.data, 'binary').toString();
+            //   // var baseString = buf.toString('base64');
+            //   console.log(buff);
+            //   sharp(buff.toString()).resize(150, 150).toBuffer(function(err, buf){
+            //     if(err){
+            //       console.log(err);
+            //       res.send(err);
+            //     }
+            //     else{
+            //       baseString = buf.toString('base64');
+            //     }
+            //   });
+            // });
 
-          res.status(200).send({ result: "success" });
+            axios.get(req.file.location, { responseType: 'arraybuffer' })
+              .then((res) => {
+                console.log(`Resizing Image!`);
+                return sharp(res.data)
+                  .resize(150, 150)
+                  .toBuffer(function(err, buf){
+                    if(err){
+                      console.log(err);
+                      res.send(err);
+                    }
+                    else{
+                      baseString = buf.toString('base64');
+                      console.log(baseString);
+                      var options = {
+                        uri: "http://localhost:3000/api/users",
+                        method: 'PUT',
+                        body:{
+                          uuid : req.body.uuid,
+                          thumbnail : {
+                            title : req.body.book,
+                            photoBase64 : baseString
+                          }
+                        },
+                        json:true
+                      };
+                      // console.log(options.body);
+                      request(options, function(err,httpResponse,body){
+                        if(err) console.log(err);
+                        else{
+                          console.log("req successed");
+                        }
+                      });
+                    }
+                  });
+              })
+              .then(() => {
+                res.status(200).send({ result: "success" });
+              })
+              .catch((err) => {
+                console.log(`Couldn't process: ${err}`);
+              });
+
         } else {
           res.status(400).send({
             result: "fail",
@@ -88,13 +133,11 @@ router.get("/", function (req, res) {
   var returnImg;
   var imgID;
 
-  Card.findOneByTodoid(req.query.cardID)
+  Card.findOneByTodoid(req.query.uuid, req.query.imgID)
     .then(function (card) {
+      console.log(card);
       returnData = card;
       imgID = card.imgID;
-    })
-    .then(function(){
-      returnImg = s3.getObject({Bucket: 'afgbucket', Key: imgID}).createReadStream();
     })
     .catch(function () {
       res.status(500).send({ result: "fail" });
@@ -103,8 +146,8 @@ router.get("/", function (req, res) {
     .finally(function () {
       res.status(200).send({
         result: "success",
-        img: returnImg,
-        data: returnData
+        data: returnData,
+        imgURL: "https://afgbucket.s3.ap-northeast-2.amazonaws.com/" + returnData.imgID + ".jpg",
       });
     });
 });
