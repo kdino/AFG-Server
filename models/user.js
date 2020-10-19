@@ -9,7 +9,8 @@ const userSchema = new mongoose.Schema({
   churchName: {type: String, require: true},
   thumbnailList: [{
     title: {type: String},
-    photoBase64: {type: String} 
+    photoBase64: {type: String},
+    imgID: {type: String}
   }]
 });
 

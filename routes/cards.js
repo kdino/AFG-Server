@@ -72,8 +72,9 @@ router.post("/", function (req, res) {
                         body:{
                           uuid : req.body.uuid,
                           thumbnail : {
-                            title : req.body.book,
-                            photoBase64 : baseString
+                            title : req.body.book + " " + req.body.chapter + " " + req.body.verse1,
+                            photoBase64 : baseString,
+                            imgID : req.body.imgID
                           }
                         },
                         json:true
