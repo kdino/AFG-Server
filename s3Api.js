@@ -17,8 +17,11 @@ module.exports = {
             key: function (req, file, cb) {
                 let extension = path.extname(file.originalname);
                 // cb(null, uuid() + Date.now().toString() + extension);
-                // console.log(file)
-                cb(null, req.body.imgID + ".jpg");
+                console.log(file);
+		console.log("@@@@@@@@@@@@@@@@@@");
+		console.log(req.body);
+                //cb(null, req.body.imgID + ".jpg");
+                cb(null, file.originalname + ".jpg");
             },
             acl: 'public-read-write'
         }),

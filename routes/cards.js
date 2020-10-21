@@ -22,7 +22,7 @@ router.post("/", function (req, res) {
   upload(req, res, function (err) {
     if (!err) myReturn.pictureResult = "success";
 
-    console.log(req.body);
+//    console.log(req.body);
     Card.create(req.body)
       .then(function () {
         myReturn.cardResult = "success";
