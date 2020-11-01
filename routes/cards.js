@@ -66,13 +66,21 @@ router.post("/", function (req, res) {
                     else{
                       baseString = buf.toString('base64');
                       console.log(baseString);
+                      var mytitle;
+                      if (req.body.verse1 == req.body.verse2){
+                        mytitle = req.body.book + " " + req.body.chapter + ":" + req.body.verse1;
+                      }
+                      else{
+                        mytitle = req.body.book + " " + req.body.chapter + ":" + req.body.verse1 + "-" + req.body.verse2;
+                      }
+
                       var options = {
                         uri: "http://localhost:3000/api/users",
                         method: 'PUT',
                         body:{
                           uuid : req.body.uuid,
                           thumbnail : {
-                            title : req.body.book + " " + req.body.chapter + " " + req.body.verse1,
+                            title : mytitle,
                             photoBase64 : baseString,
                             imgID : req.body.imgID
                           }

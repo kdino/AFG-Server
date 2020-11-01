@@ -18,8 +18,8 @@ module.exports = {
                 let extension = path.extname(file.originalname);
                 // cb(null, uuid() + Date.now().toString() + extension);
                 console.log(file);
-		console.log("@@@@@@@@@@@@@@@@@@");
-		console.log(req.body);
+		        console.log("@@@@@@@@@@@@@@@@@@");
+		        console.log(req.body);
                 //cb(null, req.body.imgID + ".jpg");
                 cb(null, file.originalname + ".jpg");
             },
