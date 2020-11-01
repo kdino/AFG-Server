@@ -38,6 +38,9 @@ app.use("/api/bibles", require("./routes/bibles"));
 // pictures Router
 app.use("/api/pictures", require("./routes/cards"));
 
+// temp message Router
+app.use("/api/messages", require("./routes/messages"));
+
 // Get Default Image
 app.get("/api/defaultPictures/:picID", function (req, res) {
   var params = {
