@@ -47,4 +47,14 @@ router.get("/", function (req, res) {
     });
   });
 
+  router.delete("/", function (req, res){
+    User.deleteThumbnail(req.query.uuid, req.query.imgID)
+    .then(function(){
+      res.status(200).send({ "result": "success" });
+    })
+    .catch(function(err){
+      res.status(400).send({ "result": "fail" });
+    });
+  });
+
 module.exports = router;

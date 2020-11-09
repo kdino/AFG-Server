@@ -10,7 +10,8 @@ const cardSchema = new mongoose.Schema({
   verse2: { type: Number, required: true },
   feelings: { type: [String], required: true },
   imageRatio: {type: Number, required: true},
-  imgURI: { type: String}
+  imgURI: { type: String},
+  isDeleted: {type: Boolean, default: false}
 });
 
 // Create a new card
@@ -23,6 +24,11 @@ cardSchema.statics.create = function (payload) {
 // Find one by userID
 cardSchema.statics.findOneByTodoid = function (uuid, imgID) {
   return this.findOne({ uuid, imgID });
+};
+
+// Delete a card
+cardSchema.statics.deleteCard = function(uuid, imgID){
+  return this.updateOne({ uuid, imgID }, { $set: { isDeleted: true } });
 };
 
 // Create Model and Export

@@ -161,4 +161,36 @@ router.get("/", function (req, res) {
     });
 });
 
+router.delete("/", function(req, res){
+  Card.deleteCard(req.query.uuid, req.query.imgID)
+    .then(function (card) {
+      console.log(card);
+
+      var options = {
+        uri: "http://localhost:3000/api/users",
+        method: 'DELETE',
+        qs:{
+          uuid : req.query.uuid,
+          imgID : req.query.imgID
+        }
+      };
+
+      request(options, function(err,httpResponse,body){
+        if(err) console.log(err);
+        else{
+          console.log("req successed");
+        }
+      });
+    })
+    .catch(function (){
+      res.status(500).send({ result: "fail" });
+      return;
+    })
+    .finally(function (){
+      res.status(200).send({
+        result: "success"
+      });
+    });
+});
+
 module.exports = router;
