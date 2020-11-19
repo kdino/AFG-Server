@@ -23,7 +23,7 @@ router.get("/niv", function (req, res) {
       });
       res.status(200).send({
         result: "success",
-        words: returnVerse.substring(0, returnVerse.length - 1),
+        words: returnVerse.substring(0, returnVerse.length - 1) + " - NIV",
       });
     })
     .catch((err) => res.status(500).send(err));
@@ -47,7 +47,7 @@ router.get("/nkjv", function (req, res) {
         .status(200)
         .send({
           result: "success",
-          words: returnVerse.substring(0, returnVerse.length - 1),
+          words: returnVerse.substring(0, returnVerse.length - 1) + " - NKJV",
         });
     })
     .catch((err) => res.status(500).send(err));
