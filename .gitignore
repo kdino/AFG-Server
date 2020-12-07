@@ -107,3 +107,4 @@ dist
 *.pem
 config.json
 rootkey.csv
+aws.json

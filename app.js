@@ -10,11 +10,7 @@ const AWS = require("aws-sdk");
 const s3 = new AWS.S3();
 const app = express();
 
-app.use(
-  bodyParser.urlencoded({
-    extended: false,
-  })
-);
+app.use(bodyParser.json({limit : "50mb"}));
 app.use(express.static("public"));
 
 mongoose
@@ -41,6 +37,9 @@ app.use("/api/bibles", require("./routes/bibles"));
 
 // pictures Router
 app.use("/api/pictures", require("./routes/cards"));
+
+// temp message Router
+app.use("/api/messages", require("./routes/messages"));
 
 // Get Default Image
 app.get("/api/defaultPictures/:picID", function (req, res) {

@@ -9,21 +9,20 @@ const bibleSchema = new mongoose.Schema({
   words: { type: String },
 });
 
-// Find one by userID
 bibleSchema.statics.findVerse = function (book, chapter, verse1, verse2) {
-  var returnObj;
-  if (verse1 === verse2) {
-    returnObj = this.find({ book, chapter, verse: verse1 });
-  } else {
-    returnObj = this.find({
-      book,
-      chapter,
-      verse: { $gte: verse1, $lte: verse2 },
-	}).sort({ key: 1 });
-  }
-
-  return returnObj;
-};
+	var returnObj;
+	if (verse1 === verse2) {
+	  returnObj = this.find({ book, chapter, verse: verse1 });
+	} else {
+	  returnObj = this.find({
+		book,
+		chapter,
+		verse: { $gte: verse1, $lte: verse2 },
+	  }).sort({ key: 1 });
+	}
+  
+	return returnObj;
+  };
 
 // Create Model and Export
-module.exports = mongoose.model("Engbible", bibleSchema);
+module.exports = mongoose.model("BibleNIV", bibleSchema, "bibleNIV");

@@ -13,11 +13,20 @@ module.exports = {
         storage: multerS3({
             s3: s3,
             bucket: config.customImageBucket,
+            contentType: multerS3.AUTO_CONTENT_TYPE,
             key: function (req, file, cb) {
                 let extension = path.extname(file.originalname);
-                cb(null, uuid() + Date.now().toString() + extension)
+                // cb(null, uuid() + Date.now().toString() + extension);
+                console.log(file);
+		        console.log("@@@@@@@@@@@@@@@@@@");
+		        console.log(req.body);
+                //cb(null, req.body.imgID + ".jpg");
+                cb(null, file.originalname + ".jpg");
             },
             acl: 'public-read-write'
-        })
+        }),
+    }),
+    getBase64 : multer({
+        storage: multer.memoryStorage()
     })
 };
