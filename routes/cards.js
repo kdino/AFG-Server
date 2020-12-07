@@ -5,9 +5,9 @@ const s3Api = require("../s3Api");
 const sharp = require('sharp');
 const request = require('request');
 const axios = require('axios');
+const config = require("../config.json");
 
 const upload = s3Api.upload.single("img");
-const getBase64 = s3Api.getBase64.single("img");
 
 var myReturn = {
   cardResult: "fail",
@@ -36,23 +36,6 @@ router.post("/", function (req, res) {
           myReturn.cardResult == "success" &&
           myReturn.pictureResult == "success"
         ) {
-            // axios.get(req.file.location, {
-            //   responseType: 'arraybuffer'
-            // }).then(function(response){
-            //   const buff = Buffer.from(response.data, 'binary').toString();
-            //   // var baseString = buf.toString('base64');
-            //   console.log(buff);
-            //   sharp(buff.toString()).resize(150, 150).toBuffer(function(err, buf){
-            //     if(err){
-            //       console.log(err);
-            //       res.send(err);
-            //     }
-            //     else{
-            //       baseString = buf.toString('base64');
-            //     }
-            //   });
-            // });
-
             axios.get(req.file.location, { responseType: 'arraybuffer' })
               .then((res) => {
                 console.log(`Resizing Image!`);
@@ -112,29 +95,6 @@ router.post("/", function (req, res) {
         }
       });
   });
-
-  // getBase64(req, res, function(err){
-  //   sharp(req.file.buffer).resize(150, 150).toBuffer(function(err, buf){
-  //     if(err){
-  //       console.log(err);
-  //       res.send(err);
-  //     }
-  //     else{
-  //       console.log(buf.toString('base64'));
-        
-  //       const p = {
-  //         uuid : "myUUID",
-  //         thumbnail : {
-  //           title : "titleExodus",
-  //           photoBase64 : buf.toString('base64')
-  //         }
-  //       };
-  //       console.log(p.uuid);
-  //       console.log(p.thumbnail);
-  //       User.updateOneById(p.uuid, p.thumbnail);
-  //     }
-  //   });
-  // });
 });
 
 router.get("/", function (req, res) {
@@ -156,7 +116,7 @@ router.get("/", function (req, res) {
       res.status(200).send({
         result: "success",
         data: returnData,
-        imgURL: "https://afgbucket.s3.ap-northeast-2.amazonaws.com/" + returnData.imgID + ".jpg",
+        imgURL: config.bucketURL + returnData.imgID + ".jpg",
       });
     });
 });

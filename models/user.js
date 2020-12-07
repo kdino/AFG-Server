@@ -11,7 +11,8 @@ const userSchema = new mongoose.Schema({
     title: {type: String},
     photoBase64: {type: String},
     imgID: {type: String}
-  }]
+  }],
+  
 });
 
 // Create a new user document
