@@ -59,6 +59,22 @@ router.post("/", function (req, res) {
 
                       var options = {
                         uri: "http://localhost:3000/api/users",
+                        method: 'DELETE',
+                        qs:{
+                          uuid : req.body.uuid,
+                          imgID : req.body.imgID
+                        }
+                      };
+                
+                      request(options, function(err,httpResponse,body){
+                        if(err) console.log(err);
+                        else{
+                          console.log("req successed");
+                        }
+                      });
+
+                      options = {
+                        uri: "http://localhost:3000/api/users",
                         method: 'PUT',
                         body:{
                           uuid : req.body.uuid,

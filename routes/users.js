@@ -5,7 +5,11 @@ const User = require("../models/user");
 router.post("/", function (req, res) {
   User.create(req.body)
     .then(function (user) {
-      res.status(200).send({ "result": "success" });
+      code = req.body.uuid.substring(0, 6);
+      res.status(200).send({
+        "result": "success",
+        "code": code
+      });
     })
     .catch(function (err) {
       if (err.code == 11000) {
