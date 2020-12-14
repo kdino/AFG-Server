@@ -21,8 +21,8 @@ var baseString = 'none';
 router.post("/", function (req, res) {
   upload(req, res, function (err) {
     if (!err) myReturn.pictureResult = "success";
+    else console.log(err);
 
-//    console.log(req.body);
     Card.create(req.body)
       .then(function () {
         myReturn.cardResult = "success";
@@ -70,27 +70,27 @@ router.post("/", function (req, res) {
                         if(err) console.log(err);
                         else{
                           console.log("req successed");
-                        }
-                      });
-
-                      options = {
-                        uri: "http://localhost:3000/api/users",
-                        method: 'PUT',
-                        body:{
-                          uuid : req.body.uuid,
-                          thumbnail : {
-                            title : mytitle,
-                            photoBase64 : baseString,
-                            imgID : req.body.imgID
-                          }
-                        },
-                        json:true
-                      };
-                      // console.log(options.body);
-                      request(options, function(err,httpResponse,body){
-                        if(err) console.log(err);
-                        else{
-                          console.log("req successed");
+                          
+                          options = {
+                            uri: "http://localhost:3000/api/users",
+                            method: 'PUT',
+                            body:{
+                              uuid : req.body.uuid,
+                              thumbnail : {
+                                title : mytitle,
+                                photoBase64 : baseString,
+                                imgID : req.body.imgID
+                              }
+                            },
+                            json:true
+                          };
+                          // console.log(options.body);
+                          request(options, function(err,httpResponse,body){
+                            if(err) console.log(err);
+                            else{
+                              console.log("req successed");
+                            }
+                          });
                         }
                       });
                     }
@@ -104,6 +104,7 @@ router.post("/", function (req, res) {
               });
 
         } else {
+          console.log(myReturn);
           res.status(400).send({
             result: "fail",
             message: myReturn.message
