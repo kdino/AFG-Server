@@ -26,6 +26,11 @@ cardSchema.statics.findOneByTodoid = function (uuid, imgID) {
   return this.findOne({ uuid, imgID });
 };
 
+// Discard a card to overwrite
+cardSchema.statics.disCard = function(uuid, imgID){
+  return this.deleteMany({ uuid, imgID });
+};
+
 // Delete a card
 cardSchema.statics.deleteCard = function(uuid, imgID){
   return this.updateOne({ uuid, imgID }, { $set: { isDeleted: true } });
