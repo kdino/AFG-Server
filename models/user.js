@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 const userSchema = new mongoose.Schema({
   uuid: {type: String, required: true, unique: true},
   gender: {type: String, required: true},
-  dateOfBirth: {type: String, required: true},
+  age: {type: String, required: true},
   churchName: {type: String, require: true},
   thumbnailList: [{
     title: {type: String},
